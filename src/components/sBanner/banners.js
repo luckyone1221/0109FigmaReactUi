@@ -4,14 +4,58 @@ import Input from "../formComponents/Input";
 class Banners extends React.Component {
   constructor(props) {
     super(props);
+    this.updateBanners = this.updateBanners.bind(this);
+    this.addBanner = this.addBanner.bind(this);
+
     this.state = {
-      //date: new Date()
+      banners: [''],
     };
   }
+  updateBanners(banner, index){
+    let newBanners = [];
+    for(let [i,banner] of Object.entries(this.state.banners)){
+      newBanners[i] = banner;
+    }
+    newBanners[index] = banner;
+
+    console.log(newBanners);
+    this.setState({
+      banners: newBanners
+    });
+  }
+  addBanner(){
+    let newBanners = [];
+    for(let i=0; i < this.state.banners.length + 1; i++){
+      newBanners[i] = i;
+    }
+
+    console.log(newBanners);
+    this.setState({
+      banners: newBanners,
+    })
+  }
+
   render() {
-    return <div className="sMain__banners">
+    const Banners = this;
+    return <div className="sMain__banners section">
       <div className="container">
-        <Banner/>
+        {
+          this.state.banners.map(function(item, i){
+            return <Banner key={i} index={i} updateBanners={Banners.updateBanners}/>
+          })
+        }
+        {/*contorl for creation banners*/}
+        <div className="sMain__controll-row row gx-3 pt-3">
+          <div className="col-6 col-sm-auto">
+            <div className="sMain__btn sMain__btn--add r-add-btn-js" onClick={this.addBanner}>
+              Add Banner
+            </div>
+          </div>
+          <div className="col-auto">
+            <div className="sMain__btn sMain__btn--export export-data-js">Export Data
+            </div>
+          </div>
+        </div>
       </div>
     </div>;
   }
@@ -23,20 +67,22 @@ class Banner extends React.Component {
     this.addFrame = this.addFrame.bind(this);
     this.updateFrames = this.updateFrames.bind(this);
 
+    //frames do not reacting with <Frame/> component directly
+    //but this state is updating from children
     this.state = {
-      frames: [{
-        size: "300x250",
-        carType: "bmw",
-        color: "white",
-        reportingLabel: "BMW_Q2_I_PROJECTNAME_",
-        image: "red.jpg",
-        headlineTxt: "LOREM IPSUM",
-        sublineTxt: "Lorem ipsum dolor",
-        disclaimerTxt: "",
-        ctaTxt: "",
-      }],
-      //date: new Date()
+      frames: [''],
     };
+  }
+
+  //at first time we replace '' in parent state frames arr
+  componentDidMount(){
+    this.props.updateBanners(this.state.frames, this.props.index);
+  }
+  //all other times we only update it
+  componentDidUpdate(prevProps, prevState){
+    if(this.state !== prevState){
+      this.props.updateBanners(this.state.frames, this.props.index);
+    }
   }
 
   updateFrames(frame, index){
@@ -120,11 +166,17 @@ class Frame extends React.Component {
     };
   }
 
+  //at first time we replace '' in parent state frames arr
+  componentDidMount(){
+    this.props.updateFrames(this.state, this.props.index);
+  }
+  //all other times we only update it
   componentDidUpdate(prevProps, prevState){
     if(this.state !== prevState){
       this.props.updateFrames(this.state, this.props.index);
     }
   }
+
 
   handleInputChange(event) {
     const target = event.target;

@@ -7,7 +7,7 @@
   counter-reset: banner 0;
 
   //banner wrap
-  &__banners > *{
+  &__banner{
     padding-top: rem(40);
     padding-bottom: rem(40);
 
