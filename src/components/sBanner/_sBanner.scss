@@ -1,0 +1,281 @@
+// start .sMain
+.sMain {
+  --sPT: 0;
+
+  overflow: hidden;
+  //for banner indication
+  counter-reset: banner 0;
+
+  //banner wrap
+  &__banners > *{
+    padding-top: rem(40);
+    padding-bottom: rem(40);
+
+    position: relative;
+    z-index: 1;
+    &:after{
+      content: '';
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+
+      left: calc(-1 * (102vw - 100%) / 2);
+      top: 0;
+      height: 100%;
+      width: 102vw;
+      background-color: $gray-100;
+      //background-color: rgba($success, 0.05);
+      box-shadow: inset 0px 15px 25px -15px rgba($black, .2);
+      clip-path: polygon(0 2%, 100% 0, 100% 98%, 0% 100%);
+    }
+
+    &:nth-child(odd){
+      --frame-bg: #{$gray-100};
+      &:after{
+        content: none;
+      }
+    }
+  }
+  &__banner{
+    //border-bottom: 1px solid $gray-600;
+    //for frame indication
+    counter-reset: frame 0;
+  }
+  &__bann-title{
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    //margin-bottom: rem(30);
+
+    &:before{
+      counter-increment: banner;
+      content: counter(banner);
+      border-radius: rem(50);
+      min-width: rem(50);
+      height: rem(50);
+      padding: rem(8) rem(10) rem(10) rem(10);
+      margin-right: rem(20);
+
+      background-color: $white;
+      border: 2px solid $cyan;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: rem(24);
+      line-height: 1;
+      box-shadow: 1px 1px 8px 0px rgba($black, .25);
+      color: $gray-700;
+    }
+
+    font-size: rem(21);
+    color: $gray-800;
+  }
+
+  //frame_wrap
+  &__frames > *{
+    &:last-child{
+      --wrap-content: none;
+    }
+  }
+  &__frame-wrap{
+    position: relative;
+    z-index: 1;
+    border-radius: rem(16);
+
+    &:before{
+      border-radius: inherit;
+      content: '';
+      position: absolute;
+      z-index: -1;
+      //width: calc(100% - 20px);
+      width: 100%;
+      height: 100%;
+      top: 10px;
+      left: 10px;
+      background-color: $white;
+      border: 1px solid $gray-200;
+    }
+    &:after{
+      transform-origin: top;
+      content: var(--wrap-content, '');
+      position: absolute;
+      z-index: -2;
+      left: rem(24);
+      top: calc(100% - 3px);
+      height: 100px;
+      width: 20px;
+      border-left: 2px dashed $gray-400;
+      border-right: 2px dashed $gray-400;
+
+      animation: slideDownCustom .4s ease-in 0s 1;
+    }
+  }
+  @keyframes slideDownCustom {
+    from{
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    to{
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  &__frame{
+    --frame-py: #{rem(32)};
+
+    margin-bottom: rem(40);
+    border-radius: inherit;
+    padding: var(--frame-py) rem(24);
+
+    background-color: var(--frame-bg, #{$white});
+    border: 1px solid $gray-400;
+
+    box-shadow: 2px 2px 18px -2px rgba($black, .2);
+  }
+  &__f-controll-row{
+
+  }
+  &__f-inputs{
+    padding-top: var(--frame-py);
+  }
+
+  &__frame-number{
+    display: flex;
+    align-items: flex-end;
+    font-size: rem(18);
+    font-weight: 500;
+
+    &:after{
+      counter-increment: frame;
+      content: counter(frame);
+      //@extend .form-control;
+
+      //color: $gray-700;
+      margin-left: 10px;
+      color: $green;
+      font-weight: 900;
+    }
+
+    position: relative;
+    padding-bottom: rem(20);
+    &:before{
+      content: '';
+      position: absolute;
+      width: rem(40);
+      height: rem(4);
+      left: 0;
+      top: 100%;
+      transform: translateY(-50%);
+      background: linear-gradient(86.99deg, $green 0.21%, $cyan 99.92%), $white;
+    }
+  }
+  &__round-btn{
+    @extend .btn;
+    border-radius: rem(50);
+
+    width: rem(40);
+    height: rem(40);
+    position: relative;
+
+    &:before,
+    &:after{
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%) rotate(var(--cross-rotate, 0deg));
+      height: rem(16);
+      width: 2px;
+      background-color: currentColor;
+    }
+
+    &--remove{
+      @extend .btn-outline-danger;
+      color: $red!important;
+      background-color: transparent!important;
+      &:hover{
+        background-color: $red!important;
+        color: $white!important;
+      }
+
+      &:not(.active){
+        //@extend .disabled;
+      }
+      &:before{
+        --cross-rotate: 45deg;
+      }
+      &:after{
+        --cross-rotate: -45deg;
+      }
+    }
+    &--add{
+      @extend .btn-outline-info;
+      color: $cyan!important;
+      background-color: transparent!important;
+      &:hover{
+        background-color: $cyan!important;
+        color: $white!important;
+      }
+
+      &:before{
+        --cross-rotate: 0deg;
+      }
+      &:after{
+        --cross-rotate: -90deg;
+      }
+    }
+
+    //
+    &--minify{
+      @extend .btn-secondary;
+      &:before,
+      &:after{
+        content: none;
+      }
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 4px;
+      img{
+        width: 16px;
+        height: auto;
+      }
+    }
+  }
+  //
+  &__label{
+    display: block;
+  }
+  &__title{
+    text-transform: capitalize;
+    font-weight: 500;
+    color: $gray-800;
+    font-size: rem(14);
+    margin-bottom: rem(6);
+    display: block;
+  }
+
+  &__btn{
+    @extend .btn;
+    font-weight: 600;
+
+    &--add{
+      @extend .btn-info;
+      color: $white!important;
+    }
+    &--remove{
+      @extend .btn-danger;
+      color: $white!important;
+    }
+    &--export{
+      @extend .btn-success;
+      color: $white!important;
+    }
+
+  }
+  &__{}
+} // end.sMain

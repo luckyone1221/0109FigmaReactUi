@@ -1,0 +1,23 @@
+.header {
+  position: fixed;
+  //-position: absolute;
+
+  z-index: 900;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.top-nav {
+  background-color: #19323f;
+  padding: rem(12) 0;
+  p{
+    @include ell();
+  }
+
+}
+
+.svg-logo-mm{
+  fill: white;
+  width: 70px;
+}
