@@ -4,32 +4,83 @@ import Input from "../formComponents/Input";
 class Banners extends React.Component {
   constructor(props) {
     super(props);
-    this.updateBanners = this.updateBanners.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.removeFrame = this.removeFrame.bind(this);
+    this.addFrame = this.addFrame.bind(this);
     this.addBanner = this.addBanner.bind(this);
+    
+    this.sample = {
+      size: "300x250",
+      carType: "bmw",
+      color: "white",
+      version: "v1",
+      alignment: "left",
+      reportingLabel: "BMW_Q2_I_PROJECTNAME_",
+      image: "red.jpg",
+      headlineTxt: "LOREM IPSUM",
+      sublineTxt: "Lorem ipsum dolor",
+      disclaimerTxt: "",
+      ctaTxt: "",
+    };
 
     this.state = {
-      banners: [''],
+      banners: [
+        {
+          frames: [
+            {...this.sample},
+          ],
+        },
+      ],
     };
   }
-  updateBanners(banner, index){
-    let newBanners = [];
-    for(let [i,banner] of Object.entries(this.state.banners)){
-      newBanners[i] = banner;
-    }
-    newBanners[index] = banner;
 
-    console.log(newBanners);
+  //++
+  addBanner(){
+    let newBanners = this.state.banners;
+        newBanners.push({
+          frames: [
+            {...this.sample}
+          ],
+        });
+
     this.setState({
-      banners: newBanners
+      banners: newBanners,
+    })
+  }
+  handleInputChange(event,bannerIndex,frameIndex) {
+    let target = event.target;
+    let value = target.type === 'checkbox' ? target.checked : target.value;
+    let name = target.name;
+
+    let newBanners = this.state.banners;
+    // console.log(newBanners[]);
+    newBanners[bannerIndex].frames[frameIndex] = {
+      ...newBanners[bannerIndex].frames[frameIndex],
+      [name]: value,
+    }
+
+    this.setState({
+      frames: newBanners,
     });
   }
-  addBanner(){
-    let newBanners = [];
-    for(let i=0; i < this.state.banners.length + 1; i++){
-      newBanners[i] = i;
-    }
 
-    console.log(newBanners);
+  //++
+  addFrame(bannerIndex=0){
+    let newBanners = this.state.banners;
+
+    let newFrames = newBanners[bannerIndex].frames;
+        newFrames.push(newFrames[newFrames.length - 1]);
+
+    this.setState({
+      banners: newBanners,
+    })
+  }
+  removeFrame(bannerIndex, frameIndex){
+    let newBanners = this.state.banners;
+
+    let newFrames = newBanners[bannerIndex].frames;
+        newFrames.splice(frameIndex,1);
+
     this.setState({
       banners: newBanners,
     })
@@ -41,7 +92,14 @@ class Banners extends React.Component {
       <div className="container">
         {
           this.state.banners.map(function(item, i){
-            return <Banner key={i} index={i} updateBanners={Banners.updateBanners}/>
+            return <Banner
+                      key={i}
+                      index={i}
+                      frames={Banners.state.banners[i].frames}
+                      addFrame={Banners.addFrame}
+                      removeFrame={Banners.removeFrame}
+                      handleInputChange={Banners.handleInputChange}
+            />
           })
         }
         {/*contorl for creation banners*/}
@@ -52,7 +110,8 @@ class Banners extends React.Component {
             </div>
           </div>
           <div className="col-auto">
-            <div className="sMain__btn sMain__btn--export export-data-js">Export Data
+            <div className="sMain__btn sMain__btn--export export-data-js">
+              Export Data
             </div>
           </div>
         </div>
@@ -64,48 +123,7 @@ class Banners extends React.Component {
 class Banner extends React.Component {
   constructor(props) {
     super(props);
-    this.addFrame = this.addFrame.bind(this);
-    this.updateFrames = this.updateFrames.bind(this);
-
-    //frames do not reacting with <Frame/> component directly
-    //but this state is updating from children
-    this.state = {
-      frames: [''],
-    };
-  }
-
-  //at first time we replace '' in parent state frames arr
-  componentDidMount(){
-    this.props.updateBanners(this.state.frames, this.props.index);
-  }
-  //all other times we only update it
-  componentDidUpdate(prevProps, prevState){
-    if(this.state !== prevState){
-      this.props.updateBanners(this.state.frames, this.props.index);
-    }
-  }
-
-  updateFrames(frame, index){
-    //create duplicate of this.state.frames but with update from child component that was changed
-    let newFrames = [];
-    for(let [i,frame] of Object.entries(this.state.frames)){
-      newFrames[i] = frame;
-    }
-    newFrames[index] = frame;
-
-    this.setState({
-      frames: newFrames
-    });
-  }
-  addFrame(){
-    let newFrames = [];
-    for(let i=0; i < this.state.frames.length + 1; i++){
-      newFrames[i] = i;
-    }
-
-    this.setState({
-      frames: newFrames,
-    })
+    //this.state = {};
   }
 
   render() {
@@ -119,26 +137,34 @@ class Banner extends React.Component {
           </div>
         </div>
         <div className="col-auto">
-          <div className="sMain__round-btn sMain__round-btn--remove r-remove-item-js">
-
+          <div className="sMain__round-btn sMain__round-btn--remove">
           </div>
         </div>
       </div>
       <div className="sMain__frames">
         {
-          this.state.frames.map(function(item, i){
-            return <Frame key={i} index={i} updateFrames={Banner.updateFrames}/>
+          this.props.frames.map(function(item, i){
+            return <Frame
+                      frameParams={Banner.props.frames[i]}
+                      key={i}
+                      index={i}
+                      //
+                      bannerIndex={Banner.props.index}
+                      handleInputChange={Banner.props.handleInputChange}
+                      updateFrames={Banner.props.updateFrames}
+                      removeFrame={Banner.props.removeFrame}
+            />
           })
         }
       </div>
       {/**/}
       <div className="sMain__controll-row row gx-3 pt-3">
         <div className="col-6 col-sm-auto">
-          <div className="sMain__btn sMain__btn--add r-add-btn-js" onClick={this.addFrame}>Add frame
+          <div className="sMain__btn sMain__btn--add" onClick={() => this.props.addFrame(this.props.index)}>Add frame
           </div>
         </div>
         <div className="col-6 col-sm-auto">
-          <div className="sMain__btn sMain__btn--remove r-remove-item-js">Remove Banner
+          <div className="sMain__btn sMain__btn--remove">Remove Banner
           </div>
         </div>
       </div>
@@ -149,46 +175,14 @@ class Banner extends React.Component {
 class Frame extends React.Component {
   constructor(props) {
     super(props);
-    //value={this.state.size} onChange={this.handleInputChange.bind(this)}
 
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
-      size: "300x250",
-      carType: "bmw",
-      color: "white",
-      reportingLabel: "BMW_Q2_I_PROJECTNAME_",
-      image: "red.jpg",
-      headlineTxt: "LOREM IPSUM",
-      sublineTxt: "Lorem ipsum dolor",
-      disclaimerTxt: "",
-      ctaTxt: "",
-      //date: new Date()
+      //...this.props.defaultData
     };
   }
 
-  //at first time we replace '' in parent state frames arr
-  componentDidMount(){
-    this.props.updateFrames(this.state, this.props.index);
-  }
-  //all other times we only update it
-  componentDidUpdate(prevProps, prevState){
-    if(this.state !== prevState){
-      this.props.updateFrames(this.state, this.props.index);
-    }
-  }
-
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
   render() {
+    const Frame = this;
     return <div className="sMain__frame-wrap">
         <div className="sMain__frame">
           <div className="sMain__f-controll-row gx-2 row align-items-center">
@@ -204,7 +198,9 @@ class Frame extends React.Component {
               </div>
             </div>
             <div className="col-auto">
-              <div className="sMain__round-btn sMain__round-btn--remove r-remove-item-js">
+              <div className="sMain__round-btn sMain__round-btn--remove"
+                   // onClick={this.props.removeFrame.bind(this, this.props.bannerIndex, this.props.index)}>
+                   onClick={() => Frame.props.removeFrame(Frame.props.bannerIndex, Frame.props.index)}>
               </div>
             </div>
           </div>
@@ -213,13 +209,19 @@ class Frame extends React.Component {
               <div className="col-md-4 col-lg">
                 <label className="sMain__label">
                   <span className="sMain__title">size</span>
-                  <input className="sMain__input form-control" type="text" name="size" value={this.state.size} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" 
+                         name="size" 
+                         value={this.props.frameParams.size} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
+                  />
                 </label>
               </div>
               <div className="col-md-4 col-lg">
                 <label className="sMain__label">
                   <span className="sMain__title">car type</span>
-                  <select className="sMain__select form-select" name="carType" value={this.state.carType} onChange={this.handleInputChange}>
+                  <select className="sMain__select form-select" name="carType" 
+                          value={this.props.frameParams.carType} 
+                          onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
+                  >
                     <option value="bmw">bmw</option>
                     <option value="bmw_i">bmw_i</option>
                     <option value="bmw_m">bmw_m</option>
@@ -231,20 +233,24 @@ class Frame extends React.Component {
               <div className="col-md-4 col-lg">
                 <label className="sMain__label">
                   <span className="sMain__title">colour</span>
-                  <input className="sMain__input form-control" type="text" name="color" value={this.state.color} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="color" value={this.props.frameParams.color} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label"><span className="sMain__title">alignment</span>
-                  <select className="sMain__select form-select" data-key="alignment">
+                  <select className="sMain__select form-select"
+                          name="alignment"
+                          value={this.props.frameParams.alignment} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
+                  >
                     <option value="left">left</option>
                     <option value="right">right</option>
                   </select>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
-                <label className="sMain__label"><span className="sMain__title">version</span>
-                  <select className="sMain__select form-select" data-key="version">
+                <label className="sMain__label">
+                  <span className="sMain__title">version</span>
+                  <select className="sMain__select form-select" data-key="version" name="version" value={this.props.frameParams.version} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}>
                     <option value="v1">v1</option>
                     <option value="v2">v2</option>
                     <option value="v3">v3</option>
@@ -260,37 +266,37 @@ class Frame extends React.Component {
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">reportingLabel</span>
-                  <input className="sMain__input form-control" type="text" name="reportingLabel" value={this.state.reportingLabel} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="reportingLabel" value={this.props.frameParams.reportingLabel} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">image</span>
-                  <input className="sMain__input form-control" type="text" name="image" value={this.state.image} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="image" value={this.props.frameParams.image} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">headline_txt</span>
-                  <input className="sMain__input form-control" type="text" data-key="headline_txt" name="headlineTxt" value={this.state.headlineTxt} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" data-key="headline_txt" name="headlineTxt" value={this.props.frameParams.headlineTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">subline_txt</span>
-                  <input className="sMain__input form-control" type="text" name="sublineTxt" value={this.state.sublineTxt} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="sublineTxt" value={this.props.frameParams.sublineTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">disclaimer_txt</span>
-                  <input className="sMain__input form-control" type="text" name="disclaimerTxt" value={this.state.disclaimerTxt} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="disclaimerTxt" value={this.props.frameParams.disclaimerTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
               <div className="col-md-6 col-lg-4">
                 <label className="sMain__label">
                   <span className="sMain__title">cta_txt</span>
-                  <input className="sMain__input form-control" type="text" name="ctaTxt" value={this.state.ctaTxt} onChange={this.handleInputChange}/>
+                  <input className="sMain__input form-control" type="text" name="ctaTxt" value={this.props.frameParams.ctaTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
                 </label>
               </div>
             </div>
