@@ -1,6 +1,14 @@
 import React from 'react';
 import Input from "../formComponents/Input";
 
+/*todo
+*   1. removeBanner
+*   2. ExportData
+*   3. fixBannerNum Css
+*   4. removeMin Ball
+*   5. add Alert after ExportData
+*   6. make preview
+* */
 class Banners extends React.Component {
   constructor(props) {
     super(props);
@@ -199,7 +207,6 @@ class Frame extends React.Component {
             </div>
             <div className="col-auto">
               <div className="sMain__round-btn sMain__round-btn--remove"
-                   // onClick={this.props.removeFrame.bind(this, this.props.bannerIndex, this.props.index)}>
                    onClick={() => Frame.props.removeFrame(Frame.props.bannerIndex, Frame.props.index)}>
               </div>
             </div>
