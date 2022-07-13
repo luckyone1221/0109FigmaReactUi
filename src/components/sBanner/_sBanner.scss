@@ -1,13 +1,13 @@
 // start .sMain
 .sMain {
   --sPT: 0;
-
   overflow: hidden;
-  //for banner indication
-  counter-reset: banner 0;
 
-  //banner wrap
+  &__banners{
+    counter-reset: banner 0;
+  }
   &__banner{
+    counter-reset: frame 0;
     padding-top: rem(40);
     padding-bottom: rem(40);
 
@@ -35,11 +35,6 @@
         content: none;
       }
     }
-  }
-  &__banner{
-    //border-bottom: 1px solid $gray-600;
-    //for frame indication
-    counter-reset: frame 0;
   }
   &__bann-title{
     display: flex;
@@ -70,6 +65,11 @@
 
     font-size: rem(21);
     color: $gray-800;
+  }
+  &__controll-wrap{
+    &:after{
+      content: none!important;
+    }
   }
 
   //frame_wrap
@@ -266,6 +266,12 @@
     &--add{
       @extend .btn-info;
       color: $white!important;
+    }
+    &--outline-add{
+      @extend .btn-outline-info;
+      &:hover{
+        color: $white!important;
+      }
     }
     &--remove{
       @extend .btn-danger;

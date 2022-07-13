@@ -2,7 +2,7 @@ import logo from "../../logo.svg";
 
 function Header() {
   return (
-    <header className="Header" className="header">
+    <header className="Header header">
       <div className="top-nav">
         <div className="container">
           <div className="row">
