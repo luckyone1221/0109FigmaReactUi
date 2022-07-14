@@ -1,8 +1,9 @@
 import React from 'react';
+import Input from "../formComponents/Input";
 
 /*todo
-*   6. make preview
-*   7. create Input component
+*   6. make preview on github pages
+*   7. reduce size of Input component
 * */
 class Banners extends React.Component {
   constructor(props) {
@@ -328,99 +329,179 @@ class Frame extends React.Component {
           </div>
           <div className="sMain__f-inputs frame-inputs-js">
             <div className="row gx-4 gy-3">
-              <div className="col-md-4 col-lg">
-                <label className="sMain__label">
-                  <span className="sMain__title">size</span>
-                  <input className="sMain__input form-control" type="text" 
-                         name="size" 
-                         value={this.props.frameParams.size} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
-                  />
-                </label>
-              </div>
-              <div className="col-md-4 col-lg">
-                <label className="sMain__label">
-                  <span className="sMain__title">car type</span>
-                  <select className="sMain__select form-select" name="carType" 
-                          value={this.props.frameParams.carType} 
-                          onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
-                  >
-                    <option value="bmw">bmw</option>
-                    <option value="bmw_i">bmw_i</option>
-                    <option value="bmw_m">bmw_m</option>
-                    <option value="mybmw">mybmw</option>
-                    <option value="bmw_i_m">bmw_i_m</option>
-                  </select>
-                </label>
-              </div>
-              <div className="col-md-4 col-lg">
-                <label className="sMain__label">
-                  <span className="sMain__title">colour</span>
-                  <input className="sMain__input form-control" type="text" name="color" value={this.props.frameParams.color} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label"><span className="sMain__title">alignment</span>
-                  <select className="sMain__select form-select"
-                          name="alignment"
-                          value={this.props.frameParams.alignment} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}
-                  >
-                    <option value="left">left</option>
-                    <option value="right">right</option>
-                  </select>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">version</span>
-                  <select className="sMain__select form-select" data-key="version" name="version" value={this.props.frameParams.version} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}>
-                    <option value="v1">v1</option>
-                    <option value="v2">v2</option>
-                    <option value="v3">v3</option>
-                    <option value="v4">v4</option>
-                    <option value="v5">v5</option>
-                    <option value="v6">v6</option>
-                    <option value="v7">v7</option>
-                    <option value="v8">v8</option>
-                  </select>
-                </label>
-              </div>
+              <Input
+                data={{
+                  parentClasses: 'col-md-4 col-lg',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "size",
+                  type: "text",
+                  name: "size",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.size}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-4 col-lg',
+                  addClasses: 'sMain__select',
+                  htmlEl: "select",
+                  labelTxt: "car type",
+                  name: "carType",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.carType}
+                handleInputChange={this.props.handleInputChange}
+                options={[
+                  'bmw',
+                  'bmw_i',
+                  'bmw_m',
+                  'mybmw',
+                  'bmw_i_m',
+                ]}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-4 col-lg',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "colour",
+                  type: "text",
+                  name: "color",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.color}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__select',
+                  htmlEl: "select",
+                  labelTxt: "alignment",
+                  name: "alignment",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.alignment}
+                handleInputChange={this.props.handleInputChange}
+                options={[
+                  'left',
+                  'right',
+                ]}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__select',
+                  htmlEl: "select",
+                  labelTxt: "version",
+                  name: "version",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.version}
+                handleInputChange={this.props.handleInputChange}
+                options={[
+                  'v1',
+                  'v2',
+                  'v3',
+                  'v4',
+                  'v5',
+                  'v6',
+                  'v7',
+                  'v8',
+                ]}
+              />
               <div className="col-12 mt-0"></div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">reportingLabel</span>
-                  <input className="sMain__input form-control" type="text" name="reportingLabel" value={this.props.frameParams.reportingLabel} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">image</span>
-                  <input className="sMain__input form-control" type="text" name="image" value={this.props.frameParams.image} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">headline_txt</span>
-                  <input className="sMain__input form-control" type="text" data-key="headline_txt" name="headlineTxt" value={this.props.frameParams.headlineTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">subline_txt</span>
-                  <input className="sMain__input form-control" type="text" name="sublineTxt" value={this.props.frameParams.sublineTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">disclaimer_txt</span>
-                  <input className="sMain__input form-control" type="text" name="disclaimerTxt" value={this.props.frameParams.disclaimerTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <label className="sMain__label">
-                  <span className="sMain__title">cta_txt</span>
-                  <input className="sMain__input form-control" type="text" name="ctaTxt" value={this.props.frameParams.ctaTxt} onChange={(e) => Frame.props.handleInputChange(e, Frame.props.bannerIndex, Frame.props.index)}/>
-                </label>
-              </div>
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "reportingLabel",
+                  type: "text",
+                  name: "reportingLabel",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.reportingLabel}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "image",
+                  type: "text",
+                  name: "image",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.image}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "headline_txt",
+                  type: "text",
+                  name: "headlineTxt",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.headlineTxt}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "subline_txt",
+                  type: "text",
+                  name: "sublineTxt",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.sublineTxt}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "disclaimer_txt",
+                  type: "text",
+                  name: "disclaimerTxt",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.disclaimerTxt}
+                handleInputChange={this.props.handleInputChange}
+              />
+              <Input
+                data={{
+                  parentClasses: 'col-md-6 col-lg-4',
+                  addClasses: 'sMain__input',
+                  htmlEl: "input",
+                  labelTxt: "cta_txt",
+                  type: "text",
+                  name: "ctaTxt",
+                  index: this.props.index,
+                  bannerIndex: this.props.bannerIndex,
+                }}
+                value={this.props.frameParams.ctaTxt}
+                handleInputChange={this.props.handleInputChange}
+              />
             </div>
           </div>
         </div>
