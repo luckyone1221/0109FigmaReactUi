@@ -1,9 +1,14 @@
 import React from 'react';
 import Input from "../formComponents/Input";
+import {CheсkMark, Plus, Spinner, Times} from "../other/icons";
+import {Alert} from "../other/alert";
 
 /*todo
-*   6. make preview on github pages
-*   7. reduce size of Input component
+*   1. make preview on github pages
+*   2. reduce size of Input component
+*   3. add option to rename banner
+*   4. make banner preview frame by frame
+*   3.
 * */
 class Banners extends React.Component {
   constructor(props) {
@@ -165,6 +170,7 @@ class Banners extends React.Component {
     this.showAlert({
       message: 'Data was copied to clipboard',
       theme: "success",
+      cleanAfter: 3,
     });
   }
 
@@ -182,6 +188,7 @@ class Banners extends React.Component {
 
     if (data.cleanAfter){
       window.setTimeout(function (){
+
         self.setState({
           ...this.state,
           alert: {
@@ -213,28 +220,26 @@ class Banners extends React.Component {
             })
           }
         </div>
+        {/*alert*/}
+          {this.state.alert.message &&
+            <Alert
+              alert={this.state.alert}
+            />
+          }
+        {/*alert*/}
         {/*contorl for creation banners*/}
-        <div className="sMain__controll-wrap sMain__frame-wrap mt-5">
-          <div className="sMain__frame">
-            {this.state.alert.message &&
-              <div className={`alert alert-${this.state.alert.theme} fw-500`}>
-                {this.state.alert.message}
-              </div>
-            }
-            <div className="sMain__controll-row row gx-3">
-              <div className="col-6 col-sm-auto">
-                <div className="sMain__btn sMain__btn--add r-add-btn-js" onClick={this.addBanner}>
-                  Add Banner
-                </div>
-              </div>
-              <div className="col-auto">
-                <div
-                  className="sMain__btn sMain__btn--export export-data-js"
-                  onClick={this.exportData}
-                >
-                  Export Data
-                </div>
-              </div>
+        <div className="sMain__controll-row row gx-3 mt-4 justify-content-center">
+          <div className="col-6 col-sm-auto">
+            <div className="sMain__btn sMain__btn--add-banner r-add-btn-js" onClick={this.addBanner}>
+              Add Banner
+            </div>
+          </div>
+          <div className="col-auto">
+            <div
+              className="sMain__btn sMain__btn--export export-data-js"
+              onClick={this.exportData}
+            >
+              Export Data
             </div>
           </div>
         </div>
@@ -248,7 +253,6 @@ class Banner extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.nothing = null;
     //this.state = {};
   }
 
@@ -264,9 +268,20 @@ class Banner extends React.Component {
         </div>
         <div className="col-auto">
           <div
-            className={`sMain__round-btn sMain__round-btn--remove ${this.props.bannersAmount < 2 ? "disabled" : ""}`}
+            className="sMain__btn sMain__btn--add"
+            onClick={() => this.props.addFrame(this.props.index)}
+          >
+            <Plus color="currentColor" addClasses="me-sm-3"/>
+            <span className="d-none d-sm-inline">Add Frame</span>
+          </div>
+        </div>
+        <div className="col-auto">
+          <div
+            className={`sMain__btn sMain__btn--remove ${this.props.bannersAmount < 2 ? "disabled" : ""}`}
             onClick={this.props.removeBanner.bind(this,this.props.index)}
           >
+            <Times color="currentColor" addClasses="me-sm-3"/>
+            <span className="d-none d-sm-inline">Remove Banner</span>
           </div>
         </div>
       </div>
@@ -286,17 +301,6 @@ class Banner extends React.Component {
             />
           })
         }
-      </div>
-      {/**/}
-      <div className="sMain__controll-row row gx-3 pt-3">
-        <div className="col-6 col-sm-auto">
-          <div className="sMain__btn sMain__btn--outline-add" onClick={() => this.props.addFrame(this.props.index)}>Add frame
-          </div>
-        </div>
-        <div className="col-6 col-sm-auto">
-          <div className={`sMain__btn sMain__btn--remove ${this.props.bannersAmount < 2 ? "disabled" : ""}`}>Remove Banner
-          </div>
-        </div>
       </div>
     </div>;
   }

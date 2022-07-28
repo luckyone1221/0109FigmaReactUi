@@ -267,21 +267,119 @@
       @extend .btn-info;
       color: $white!important;
     }
-    &--outline-add{
-      @extend .btn-outline-info;
-      &:hover{
-        color: $white!important;
-      }
-    }
     &--remove{
       @extend .btn-danger;
       color: $white!important;
     }
-    &--export{
-      @extend .btn-success;
+
+    //
+    &--add-banner{
+      @extend .btn-lg;
+      @extend .btn-info;
+      border-radius: rem(8);
+      min-width: 200px;
+
       color: $white!important;
     }
+    &--export{
+      @extend .btn-lg;
+      @extend .btn-success;
+      color: $white!important;
 
+      border-radius: rem(8);
+      min-width: 200px;
+
+      //dont used at the moment
+      //.icon{
+      //  animation: Spin 1s linear 0s infinite normal;
+      //  margin: 0 0 0 rem(12);
+      //}
+    }
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    .icon{
+      width: rem(24);
+      height: rem(24);
+      fill: white;
+    }
+
+    &.disabled{
+      opacity: .5;
+    }
   }
+  &__alert{
+    animation: fadeIn .3s ease-out 0s 1 normal;
+    position: fixed;
+    z-index: 999;
+    top: calc(var(--header-h, 75px) + 20px);
+    right: 20px;
+    font-weight: 500;
+
+    width: calc(100vw - 40px);
+    padding: 4px 12px;
+    @include media-breakpoint-up(sm){
+      width: auto;
+      padding: 6px 18px;
+      font-size: rem(18);
+    }
+
+    border: 1px solid var(--theme-color, $success);
+    box-shadow: 3px 3px 15px -5px var(--theme-color, $success);
+
+    border-radius: $border-radius;
+
+    background-color: $white;
+    &:after{
+      content: '';
+      border-radius: inherit;
+      position: absolute;
+      z-index: -1;
+      background-color: var(--theme-color, $success);
+      opacity: .1;
+      top: -1px;
+      left: -1px;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+    }
+
+    //no other themes yet
+    &--success{
+      --theme-color: #{$success};
+      color: $gray-900;
+    }
+  }
+  &__alert-icon{
+    & > *{
+      path{
+        fill: var(--theme-color, $success);
+      }
+      width: 24px;
+      height: 24px;
+      position: relative;
+      top: -2px;
+    }
+  }
+
+  &__{}
   &__{}
 } // end.sMain
+
+@keyframes fadeIn {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+@keyframes Spin {
+  from{
+    transform: rotate(0);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}

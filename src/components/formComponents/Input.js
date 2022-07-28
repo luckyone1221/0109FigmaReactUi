@@ -33,7 +33,7 @@ class Input extends React.Component {
               onChange={(e) => this.props.handleInputChange(e, this.props.data.bannerIndex, this.props.data.index)}
             >
               {this.props.options.map((option) =>
-                <option value={option}>{option}</option>
+                <option key={option} value={option}>{option}</option>
               )}
             </select>
           )}
